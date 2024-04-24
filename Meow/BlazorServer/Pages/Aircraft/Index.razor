@@ -1,0 +1,59 @@
+﻿@page "/aircraft/index"
+@using BussinessLayer;
+@using ServiceLayer2;
+@inject AircraftManager manager;
+
+<h3>Index</h3>
+<a href="aircraft/create">Create</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Thrust
+            </th>
+            <th>
+                Price
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Aircraft aircraft in model)
+        {
+            <tr>
+                <td>
+                    @aircraft.Model.Name
+                </td>
+                <td>
+                    @aircraft.Thrust
+                </td>
+                <td>
+                    @aircraft.Price
+                </td>
+                <td>
+                    <a href="aircraft/update/@aircraft.Id">Edit</a> |
+                    <a href="aircraft/details/@aircraft.Id">Details</a> |
+                    <a href="aircraft/delete/@aircraft.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code 
+{
+    private IEnumerable<Aircraft> model = new List<Aircraft>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        model = await manager.ReadAllAsync(true);
+
+        await base.OnInitializedAsync();   
+    }
+
+
+}

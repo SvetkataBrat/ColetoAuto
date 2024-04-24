@@ -61,7 +61,7 @@ namespace DataLayer
             }
         }
 
-        public async Task<ICollection<Aircraft>> ReadAllAsync(bool useNavigationalProperties = false, bool isReadOnly = true)
+        public async Task<List<Aircraft>> ReadAllAsync(bool useNavigationalProperties = false, bool isReadOnly = true)
         {
             try
             {

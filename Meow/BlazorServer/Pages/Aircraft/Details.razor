@@ -1,0 +1,60 @@
+﻿@page "/aircraft/details/{Id:int}"
+@using BussinessLayer;
+@using ServiceLayer2;
+@inject AircraftManager manager;
+
+<h3>Details</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Model
+            </th>
+            <th>
+                Thrust
+            </th>
+            <th>
+                Price
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @modelName
+            </td>
+            <td>
+                @model.Thrust
+            </td>
+            <td>
+                @model.Price
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div>
+    <a href="aircraft/index">Back to List</a>
+</div>
+
+@code
+{
+    private Aircraft model = new();
+    private string modelName = "";
+
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        ICollection<Aircraft> allAircrafts = await manager.ReadAllAsync(true);
+        model = allAircrafts.FirstOrDefault(x => x.Id == Id);
+
+        modelName = model.Model.Name;
+
+        await base.OnInitializedAsync();
+    }
+
+}

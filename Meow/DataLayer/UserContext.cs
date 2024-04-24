@@ -55,7 +55,7 @@ namespace DataLayer
             }
         }
 
-        public async Task<ICollection<User>> ReadAllAsync(bool useNavigationalProperties = false, bool isReadOnly = false)
+        public async Task<List<User>> ReadAllAsync(bool useNavigationalProperties = false, bool isReadOnly = false)
         {
             try
             {

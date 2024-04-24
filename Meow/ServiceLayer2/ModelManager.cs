@@ -27,7 +27,7 @@ namespace ServiceLayer2
             return await modelContext.ReadAsync(key, useNavigationalProperties, isReadOnly);
         }
 
-        public async Task<ICollection<BussinessLayer.Model>> ReadAllAsync(bool useNavigationalProperties = false, bool isReadOnly = true)
+        public async Task<List<BussinessLayer.Model>> ReadAllAsync(bool useNavigationalProperties = false, bool isReadOnly = true)
         {
             return await modelContext.ReadAllAsync(useNavigationalProperties, isReadOnly);
         }

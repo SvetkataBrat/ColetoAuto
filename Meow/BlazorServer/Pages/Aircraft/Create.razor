@@ -1,0 +1,62 @@
+﻿@page "/aircraft/create"
+@using Microsoft.Extensions.Logging;
+@using BussinessLayer;
+@using ServiceLayer2;
+@inject AircraftManager manager;
+@inject ModelManager modelManager;
+@inject NavigationManager navigationManager;
+
+
+<h3>Create</h3>
+
+<EditForm Model="@model" OnValidSubmit="@HandleValidSubmit" style="display: flex; flex-direction:column;width: 60%;">
+    <label for="Price">Price: </label>
+    <InputNumber @bind-Value="model.Price"></InputNumber>
+
+    <label for="Thrust">Mileage: </label>
+    <InputNumber @bind-Value="model.Thrust"></InputNumber>
+
+    <label for="Mileage">Description: </label>
+    <InputText @bind-Value="model.Description"></InputText>
+
+    <label for="Model.Name">Model</label>
+    <InputSelect class="form-select" @bind-Value="model.ModelId" >
+        @foreach (Model model in allModels)
+        {
+            <option value="@model.Id">@model.Name</option>
+        }
+    </InputSelect>
+
+    <button type="submit">Create</button>
+
+</EditForm>
+
+@code
+{
+    private Aircraft model = new();
+    private ICollection<Model> allModels;
+
+    protected override async Task<Task> OnInitializedAsync()
+    {
+        allModels = await modelManager.ReadAllAsync();
+
+        return base.OnInitializedAsync();
+
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        try
+        {
+            await manager.CreateAsync(model);
+            
+
+            navigationManager.NavigateTo("aircraft/index", false);       
+        }
+        catch (Exception ex) 
+        {
+            
+        }
+    }
+
+}

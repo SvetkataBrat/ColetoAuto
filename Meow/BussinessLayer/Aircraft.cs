@@ -24,7 +24,6 @@ namespace BussinessLayer
         [MaxLength(1000)]
         public string Description { get; set; }
 
-
         [ForeignKey("Model")]
         public int ModelId { get; set; }
 

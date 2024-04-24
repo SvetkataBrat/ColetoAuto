@@ -1,0 +1,47 @@
+﻿@page "/carviews/index"
+@using BussinessLayer;
+@using ServiceLayer2;
+@inject CarManager carManager;
+
+<h3>Index</h3>
+<a href="hobby/create">Create</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Car car in model)
+        {
+            <tr>
+                <td>
+                    @car.Model
+                </td>
+                <td>
+                    <a href="hobby/update/@car.Id">Edit</a> |
+                    <a href="hobby/details/@car.Id">Details</a> |
+                    <a href="hobby/delete/@car.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code 
+{
+    private IEnumerable<Car> model = new List<Car>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        model = await carManager.ReadAllAsync();
+
+        await base.OnInitializedAsync();   
+    }
+
+
+}

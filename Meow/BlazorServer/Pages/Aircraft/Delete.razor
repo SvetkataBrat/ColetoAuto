@@ -1,0 +1,42 @@
+﻿@page "/aircraft/delete/{Id:int}"
+@using Microsoft.Extensions.Logging;
+@using BussinessLayer;
+@using ServiceLayer2;
+@inject AircraftManager manager;
+@inject NavigationManager navigationManager;
+
+<h3>Delete</h3>
+
+<EditForm Model="@model" OnValidSubmit="@HandleValidSubmit">
+
+    <button type="submit">Delete</button>
+
+</EditForm>
+
+@code
+{
+    private Aircraft model = new();
+
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override async Task<Task> OnInitializedAsync()
+    {
+        model = await manager.ReadAsync(Id, true);
+        return base.OnInitializedAsync();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        try
+        {
+            await manager.DeleteAsync(Id);
+
+            navigationManager.NavigateTo("aircraft/index");
+        }
+        catch (Exception ex) // Handle concrete exceptions first!
+        {
+        }
+    }
+
+}

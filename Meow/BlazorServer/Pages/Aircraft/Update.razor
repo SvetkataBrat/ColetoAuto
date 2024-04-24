@@ -1,0 +1,62 @@
+﻿@page "/aircraft/update/{Id:int}"
+@using Microsoft.Extensions.Logging;
+@using BussinessLayer;
+@using ServiceLayer2;
+@inject AircraftManager manager;
+@inject ModelManager modelManager;
+@inject NavigationManager navigationManager;
+
+<h3>Update</h3>
+
+<EditForm EditContext="@editContext" OnValidSubmit="@HandleValidSubmit" style="display: flex; flex-direction:column;width: 60%;">
+    <label for="Price">Price: </label>
+    <InputNumber @bind-Value="model.Price" ></InputNumber>
+
+    <label for="Thrust">Mileage: </label>
+    <InputNumber @bind-Value="model.Thrust"></InputNumber>
+
+    <label for="Mileage">Description: </label>
+    <InputText @bind-Value="model.Description"></InputText>
+
+    <InputSelect class="form-select" @bind-Value="model.ModelId">
+        @foreach (Model model in modelManager.ReadAllAsync().Result)
+        {
+            <option value="@model.Id">@model.Name</option>
+        }
+    </InputSelect>
+
+    <button type="submit">Edit</button>
+
+</EditForm>
+
+<div>
+    <a href="aircraft/index">Back to List</a>
+</div>
+
+@code 
+{
+    private Aircraft model = new();
+
+    private EditContext editContext;
+
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override async Task<Task> OnInitializedAsync()
+    {
+        model.Id = Id;
+        editContext = new EditContext(model);
+        model = await manager.ReadAsync(Id);
+
+        return base.OnInitializedAsync();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        await manager.UpdateAsync(model);
+
+        navigationManager.NavigateTo("aircraft/index", false);
+
+    }
+
+}

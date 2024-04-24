@@ -54,10 +54,7 @@ namespace DataLayer
                 IQueryable<Car> query = dbContext.Cars;
                 if (useNavigationalProperties)
                 {
-                    if (useNavigationalProperties)
-                    {
-                        query = query.Include(b => b.Model);
-                    }
+                    query = query.Include(b => b.Model);
                 }
                 return await query.FirstOrDefaultAsync(x => x.Id == key);
             }
@@ -67,7 +64,7 @@ namespace DataLayer
             }
         }
 
-        public async Task<ICollection<Car>> ReadAllAsync(bool useNavigationalProperties = false, bool isReadOnly = true)
+        public async Task<List<Car>> ReadAllAsync(bool useNavigationalProperties = false, bool isReadOnly = true)
         {
             try
             {
@@ -76,7 +73,7 @@ namespace DataLayer
                 {
                     query = query.Include(b => b.Model);
                 }
-                return await query.ToArrayAsync();
+                return await query.ToListAsync();
             }
             catch (Exception)
             {

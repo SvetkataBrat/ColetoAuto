@@ -1,0 +1,43 @@
+﻿@page "/car/delete/{carId:int}"
+@using Microsoft.Extensions.Logging;
+@using BussinessLayer;
+@using ServiceLayer2;
+@inject CarManager carManager;
+@inject NavigationManager navigationManager;
+
+<h3>Create Hobby</h3>
+
+<EditForm Model="@model" OnValidSubmit="@HandleValidSubmit">
+    <label for="name">@model.Model</label>
+
+    <button type="submit">Delete</button>
+
+</EditForm>
+
+@code
+{
+    private Car model = new();
+
+    [Parameter]
+    public int carId { get; set; }
+
+    protected override Task OnInitializedAsync()
+    {
+
+        return base.OnInitializedAsync();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        try
+        {
+            await carManager.DeleteAsync(carId);
+
+            navigationManager.NavigateTo("car/index");
+        }
+        catch (Exception ex) // Handle concrete exceptions first!
+        {
+        }
+    }
+
+}

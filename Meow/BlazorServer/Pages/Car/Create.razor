@@ -1,0 +1,56 @@
+﻿@page "/car/create"
+@using Microsoft.Extensions.Logging;
+@using BussinessLayer;
+@using ServiceLayer2;
+@inject CarManager carManager;
+@inject ModelManager modelManager;
+@inject NavigationManager navigationManager;
+
+
+<h3>Create Car</h3>
+
+<EditForm Model="@model" OnValidSubmit="@HandleValidSubmit" style="display: flex; flex-direction:column;width: 60%;">
+    <label for="Price">Price: </label>
+    <InputNumber @bind-Value="model.Price"></InputNumber>
+
+    <label for="Mileage">Mileage: </label>
+    <InputNumber @bind-Value="model.Mileage"></InputNumber>
+
+    <label for="Mileage">Description: </label>
+    <InputText @bind-Value="model.Description"></InputText>
+
+    <label for="HorsePower">HorsePower: </label>
+    <InputNumber @bind-Value="model.HorsePower"></InputNumber>
+
+    <label for="Model.Name">Model</label>
+    <InputSelect class="form-select" @bind-Value="model.ModelId" >
+        @foreach (Model model in modelManager.ReadAllAsync().Result)
+        {
+            <option value="@model.Id">@model.Name</option>
+        }
+    </InputSelect>
+
+    <button type="submit">Create</button>
+
+</EditForm>
+
+@code
+{
+    private BussinessLayer.Car model = new();
+    private async Task HandleValidSubmit()
+    {
+        try
+        {
+            model.UserId = "2ccae928-1186-48be-9741-49b2b3d10d53";
+            await carManager.CreateAsync(model);
+            
+
+            navigationManager.NavigateTo("car/index", false);       
+        }
+        catch (Exception ex) 
+        {
+            
+        }
+    }
+
+}

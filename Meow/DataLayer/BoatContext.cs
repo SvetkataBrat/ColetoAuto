@@ -62,7 +62,7 @@ namespace DataLayer
             }
         }
 
-        public async Task<ICollection<Boat>> ReadAllAsync(bool useNavigationalProperties = false, bool isReadOnly = false)
+        public async Task<List<Boat>> ReadAllAsync(bool useNavigationalProperties = false, bool isReadOnly = false)
         {
             try
             {
@@ -71,7 +71,7 @@ namespace DataLayer
                 {
                     query = query.Include(b => b.Model);
                 }
-                return await query.ToArrayAsync();
+                return await query.ToListAsync();
             }
             catch (Exception)
             {

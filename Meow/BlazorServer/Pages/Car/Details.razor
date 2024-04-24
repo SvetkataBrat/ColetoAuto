@@ -1,0 +1,60 @@
+﻿@page "/car/details/{carId:int}"
+@using BussinessLayer;
+@using ServiceLayer2;
+@inject CarManager carManager;
+
+<h3>Details</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Model
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                Horse Power
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @modelName
+            </td>
+            <td>
+                @model.Price
+            </td>
+            <td>
+                @model.HorsePower
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div>
+    <a href="car/index">Back to List</a>
+</div>
+
+@code
+{
+    private Car model = new();
+    private string modelName = "";
+
+    [Parameter]
+    public int carId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        ICollection<Car> allCars = await carManager.ReadAllAsync(true);
+        model = allCars.FirstOrDefault(x => x.Id == carId);
+
+        modelName = model.Model.Name;
+
+        await base.OnInitializedAsync();
+    }
+
+}
